@@ -9,18 +9,14 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    versions = ext {
-        junit5 = '5.5.2'
-        junitPlatform = '1.5.2'
-    }
-}
+def junitPlatform = '1.5.2'
+def junit5 = '5.5.2'
 
 dependencies {
-    testCompile("org.junit.platform:junit-platform-launcher:${versions.junitPlatform}")
-    testCompile("org.junit.platform:junit-platform-commons:${versions.junitPlatform}")
-    testCompile("org.junit.jupiter:junit-jupiter:${versions.junit5}")
-    testCompile("org.junit.jupiter:junit-jupiter-api:${versions.junit5}")
+    testImplementation("org.junit.platform:junit-platform-launcher:${junitPlatform}")
+    testImplementation("org.junit.platform:junit-platform-commons:${junitPlatform}")
+    testImplementation("org.junit.jupiter:junit-jupiter:${junit5}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junit5}")
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
