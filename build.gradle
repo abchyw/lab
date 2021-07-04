@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    versions = ext {
+        junit5 = '5.5.2'
+        junitPlatform = '1.5.2'
+    }
+}
+
+dependencies {
+    testCompile("org.junit.platform:junit-platform-launcher:${versions.junitPlatform}")
+    testCompile("org.junit.platform:junit-platform-commons:${versions.junitPlatform}")
+    testCompile("org.junit.jupiter:junit-jupiter:${versions.junit5}")
+    testCompile("org.junit.jupiter:junit-jupiter-api:${versions.junit5}")
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
