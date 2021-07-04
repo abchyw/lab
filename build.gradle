@@ -13,6 +13,11 @@ def junitPlatform = '1.5.2'
 def junit5 = '5.5.2'
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
     testImplementation("org.junit.platform:junit-platform-launcher:${junitPlatform}")
     testImplementation("org.junit.platform:junit-platform-commons:${junitPlatform}")
     testImplementation("org.junit.jupiter:junit-jupiter:${junit5}")
