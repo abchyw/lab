@@ -26,7 +26,9 @@ public class LatchHarness {
             t.start();
         }
         val start = System.nanoTime();
+        // start executing tasks
         startGate.countDown();
+        // wait until all the tasks are completed
         endGate.await();
         val end = System.nanoTime();
         return end - start;
