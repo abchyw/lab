@@ -23,6 +23,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:${junit5}")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junit5}")
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
 test {
