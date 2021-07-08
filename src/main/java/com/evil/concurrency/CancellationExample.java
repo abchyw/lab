@@ -2,12 +2,11 @@ package com.evil.concurrency;
 
 import lombok.val;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class CancellationExample {
     private static final ScheduledExecutorService cancelExec = new ScheduledThreadPoolExecutor(2);
+    private static final ExecutorService taskExec = new ThreadPoolExecutor(2, 3, 1000, TimeUnit.SECONDS, new LinkedBlockingDeque<>());
 
     public static void timedRun(final Runnable r,
                                 long timeout,
@@ -42,5 +41,20 @@ public class CancellationExample {
         }, timeout, unit);
         taskThread.join(unit.toMillis(timeout) + 3000);
         task.rethrow();
+    }
+
+    public static void timedRunWithTask(final Runnable r,
+                                        long timeout,
+                                        TimeUnit unit) throws InterruptedException {
+        Future<?> task = taskExec.submit(r);
+        try {
+            task.get(timeout, unit);
+        } catch (TimeoutException e) {
+            System.out.println("time out");
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }finally {
+            task.cancel(true);
+        }
     }
 }
