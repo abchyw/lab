@@ -55,7 +55,6 @@ public class PutTakeTest {
                     bb.put(seed);
                     sum += seed;
                     seed = xorShift(seed);
-                    System.out.println(Thread.currentThread().getName() + " producer loops: " + i);
                 }
                 System.out.println(Thread.currentThread().getName() + " producer loop ends");
                 putSum.getAndAdd(sum);
@@ -75,7 +74,6 @@ public class PutTakeTest {
                 int sum = 0;
                 for (int i = nTrials; i > 0; --i) {
                     sum += bb.take();
-                    System.out.println(Thread.currentThread().getName() + " consumer loops: " + i);
                 }
                 System.out.println(Thread.currentThread().getName() + " consumer loop ends");
                 takeSum.getAndAdd(sum);

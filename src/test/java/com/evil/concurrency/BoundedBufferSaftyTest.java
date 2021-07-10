@@ -10,7 +10,7 @@ class BoundedBufferSaftyTest {
 
     @Test
     void test() {
-        val t = new PutTakeTest(5, 2, 10);
+        val t = new PutTakeTest(10, 10, 10);
         t.test();
         t.shutdown();
     }

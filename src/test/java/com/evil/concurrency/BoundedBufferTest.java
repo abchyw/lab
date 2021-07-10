@@ -3,6 +3,9 @@ package com.evil.concurrency;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,12 +23,50 @@ class BoundedBufferTest {
     }
 
     @Test
-    void isFullWhenPuts() throws InterruptedException {
+    void isFullWhenPuts() throws InterruptedException, BrokenBarrierException {
         // when
+        val barrier = new CyclicBarrier(3);
         val bb = new BoundedBuffer<Integer>(10);
-        for (int i = 0; i < 10; i++) {
-            bb.put(i);
-        }
+        new Thread(() -> {
+            try {
+                barrier.await();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < 5; i++) {
+                try {
+                    bb.put(i);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            try {
+                barrier.await();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+        new Thread(() -> {
+            try {
+                barrier.await();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < 5; i++) {
+                try {
+                    bb.put(i);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            try {
+                barrier.await();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+        barrier.await();
+        barrier.await();
         // then
         assertThat(bb.isFull()).isTrue();
         assertThat(bb.isEmpty()).isFalse();

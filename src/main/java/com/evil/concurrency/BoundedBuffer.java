@@ -27,17 +27,17 @@ public class BoundedBuffer<E> {
         availableItems.release();
     }
 
-    private synchronized void doInsert(E x) {
-        int i = putPosition;
-        items[i] = x;
-        putPosition = (++i == items.length) ? 0 : i;
-    }
-
-    public synchronized E take() throws InterruptedException {
+    public E take() throws InterruptedException {
         availableItems.acquire();
         E item = doExtract();
         availableSpaces.release();
         return item;
+    }
+
+    private synchronized void doInsert(E x) {
+        int i = putPosition;
+        items[i] = x;
+        putPosition = (++i == items.length) ? 0 : i;
     }
 
     private synchronized E doExtract() {
