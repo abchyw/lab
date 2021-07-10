@@ -35,6 +35,7 @@ public class CancellationExample {
         val task = new RethrowableTask();
         val taskThread = new Thread(task);
         taskThread.start();
+        // try interrupting the thread after timeout
         cancelExec.schedule(() -> {
             System.out.println("interrupt is called");
             taskThread.interrupt();
@@ -53,7 +54,7 @@ public class CancellationExample {
             System.out.println("time out");
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             task.cancel(true);
         }
     }
